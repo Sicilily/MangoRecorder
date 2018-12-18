@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sherry.mangorecorder.R;
+import com.sherry.mangorecorder.adapter.RecordListAdapter;
 
 
 public class RecordListFragment extends Fragment {
@@ -21,6 +22,8 @@ public class RecordListFragment extends Fragment {
     private int position;
     private TextView tip;
     private RecyclerView recyclerView;
+    private RecordListAdapter adapter;
+    private LinearLayoutManager layoutManager;
 
     public RecordListFragment() {
         // Required empty public constructor
@@ -47,15 +50,18 @@ public class RecordListFragment extends Fragment {
         tip = view.findViewById(R.id.tv_tip);
         recyclerView = view.findViewById(R.id.recycleView);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         //newest to oldest order (database stores from oldest to newest)
-        llm.setReverseLayout(true);
-        llm.setStackFromEnd(true);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
 
-        recyclerView.setLayoutManager(llm);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        adapter = new RecordListAdapter(getActivity(), layoutManager);
+        recyclerView.setAdapter(adapter);
 
         return view;
     }

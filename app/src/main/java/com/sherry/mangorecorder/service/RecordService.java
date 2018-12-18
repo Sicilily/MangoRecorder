@@ -8,6 +8,8 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.sherry.mangorecorder.DBHelper;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -22,13 +24,15 @@ public class RecordService extends Service {
     private String mFileName = null;
     private String mFilePath = null;
 
+    private DBHelper mDatabase;
+
     public RecordService() {
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-
+        mDatabase = new DBHelper(getApplicationContext());
     }
 
     @Override
@@ -74,7 +78,7 @@ public class RecordService extends Service {
 
         do {
             count ++;
-            mFileName = "MyRecord" + "_" + count + ".amr";
+            mFileName = "MyRecord" + "_" + (mDatabase.getCount() + count) + ".amr";
             mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
             mFilePath += "/MyRecorder/" + mFileName;
             file = new File(mFileName);
@@ -89,5 +93,12 @@ public class RecordService extends Service {
 
         Toast.makeText(this, "录音文件已保存在" + mFilePath + "中", Toast.LENGTH_SHORT).show();
         mRecorder = null;
+
+        try {
+            mDatabase.addRecord(mFileName, mFilePath, totalTime);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
     }
 }
