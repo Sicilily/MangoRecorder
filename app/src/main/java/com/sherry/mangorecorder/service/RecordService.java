@@ -62,6 +62,8 @@ public class RecordService extends Service {
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);
         mRecorder.setOutputFile(mFilePath);
+        mRecorder.setAudioSamplingRate(44100);
+        mRecorder.setAudioEncodingBitRate(192000);
 
         try {
             mRecorder.prepare();

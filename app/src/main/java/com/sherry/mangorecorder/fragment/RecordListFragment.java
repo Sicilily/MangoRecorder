@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.sherry.mangorecorder.DBHelper;
 import com.sherry.mangorecorder.R;
 import com.sherry.mangorecorder.adapter.RecordListAdapter;
 
@@ -24,6 +25,7 @@ public class RecordListFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecordListAdapter adapter;
     private LinearLayoutManager layoutManager;
+    private DBHelper mDatabase;
 
     public RecordListFragment() {
         // Required empty public constructor
@@ -42,12 +44,16 @@ public class RecordListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt("position");
+        mDatabase = new DBHelper(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_record_list, container, false);
         tip = view.findViewById(R.id.tv_tip);
+        if (mDatabase.getCount() > 0) {
+            tip.setVisibility(View.GONE);
+        }
         recyclerView = view.findViewById(R.id.recycleView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());

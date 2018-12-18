@@ -2,10 +2,13 @@ package com.sherry.mangorecorder.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import com.sherry.mangorecorder.DBHelper;
 import com.sherry.mangorecorder.OnDatabaseChangedListener;
 import com.sherry.mangorecorder.R;
+import com.sherry.mangorecorder.fragment.PlayFragment;
 import com.sherry.mangorecorder.model.Record;
 
 import java.util.concurrent.TimeUnit;
@@ -25,6 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.ViewHolder> implements OnDatabaseChangedListener{
 
+    private static final String TAG = "RecordListAdapter";
     private Context mContext;
     private DBHelper mDatabase;
     private Record record;
@@ -46,7 +51,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         record = getItem(position);
 
         long duration = record.getLength();
@@ -66,7 +71,18 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    PlayFragment playFragment = new PlayFragment().newInstance(getItem(holder.getLayoutPosition()));
 
+                    FragmentTransaction transaction = ((FragmentActivity) mContext)
+                            .getSupportFragmentManager()
+                            .beginTransaction();
+
+                    playFragment.show(transaction, "dialog_play");
+
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
             }
         });
 
