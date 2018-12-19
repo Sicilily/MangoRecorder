@@ -80,7 +80,7 @@ public class RecordService extends Service {
 
         do {
             count ++;
-            mFileName = "MyRecord" + "_" + (mDatabase.getCount() + count) + ".amr";
+            mFileName = "MyRecord" + "_" + (mDatabase.getCount() + count) + ".mp3";
             mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
             mFilePath += "/MyRecorder/" + mFileName;
             file = new File(mFileName);

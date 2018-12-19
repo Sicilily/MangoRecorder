@@ -104,4 +104,22 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return rowId;
     }
+
+    public void renameRecord(Record record, String recordName, String filePath) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(RecordItem.NAME, recordName);
+        cv.put(RecordItem.PATH, filePath);
+        db.update(RecordItem.TABLE_NAME, cv, RecordItem._ID + "=" + record.getId(), null);
+
+        if (mOnDatabaseChangedListener != null) {
+            mOnDatabaseChangedListener.onDatabaseEntryRenamed();
+        }
+    }
+
+    public void deleteRecord(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] whereArgs = { String.valueOf(id) };
+        db.delete(RecordItem.TABLE_NAME, "_ID=?", whereArgs);
+    }
 }

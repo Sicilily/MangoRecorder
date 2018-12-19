@@ -13,7 +13,7 @@
         android:background="@drawable/bg_chronometer"
         android:progressDrawable="@drawable/bg_chronometer"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
         android:layout_centerHorizontal="true" />
 
     <Chronometer
